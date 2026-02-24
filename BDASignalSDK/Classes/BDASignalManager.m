@@ -55,7 +55,11 @@
     
     // 解析clickid
     [self anylyseDeeplinkClickidWithOptions:launchOptions connectOptions:connetOptions];
-    
+//    [self uploadAppLaunchEvent];
+}
+
+
++ (void)uploadAppLaunchEvent {
     if ([BDASignalManager sharedInstance].enableDelayEvent) {
         [[BDASignalManager sharedInstance].cacheArray addObject:@{
             @"event_name" : @"launch_app",
@@ -67,9 +71,25 @@
     }];
 }
 
++ (NSDictionary *)getIdsParams {
+    if ([BDASignalManager getClickId] != nil) {
+        return @{
+            @"clickId": [BDASignalManager getClickId],
+            @"trackId": [BDASignalManager getTrack_id],
+            @"idfa": [BDASignalManager getIdfaStatus] ? [BDASignalUtility h19] : @"",
+            @"idfv": [BDASignalUtility h20],
+        };
+    }
+    return @{
+        @"idfa": [BDASignalUtility h19],
+        @"idfv": [BDASignalUtility h20],
+    };
+}
+
 + (NSString *)anylyseDeeplinkClickidWithOpenUrl:(NSString *)openUrl {
     NSDictionary *queryDict = [BDASignalUtility getQueryDictWithUrl:openUrl];
     NSString *clickid = [queryDict objectForKey:@"clickid"];
+    NSString *track_id = [queryDict objectForKey:@"track_id"];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     if (openUrl.length > 0) {
         [userDefaults setObject:openUrl forKey:@"kBDASignalOpenUrl"];
@@ -78,8 +98,19 @@
         [BDASignalManager sharedInstance].clickid = clickid;
         [userDefaults setObject:clickid forKey:@"kBDASignalClickid"];
     }
+    if ([track_id isKindOfClass:[NSString class]] && track_id.length > 0) {
+        [BDASignalManager sharedInstance].track_id = track_id;
+        [userDefaults setObject:track_id forKey:@"kBDASignalTrack_id"];
+    }
     [userDefaults synchronize];
     return clickid;
+}
+
+/**
+ 获取track_id
+ */
++ (NSString *)getTrack_id {
+    return [BDASignalManager sharedInstance].track_id;
 }
 
 + (NSString *)getClickId {
@@ -175,6 +206,9 @@
     // 获取缓存的clickid
     NSString *clickid = [userDefaults objectForKey:@"kBDASignalClickid"];
     self.clickid = clickid;
+     
+    NSString *track_id = [userDefaults objectForKey:@"kBDASignalTrack_id"];
+    self.track_id = track_id;
     
     self.openUrl = [userDefaults objectForKey:@"kBDASignalOpenUrl"];
 }

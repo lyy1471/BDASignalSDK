@@ -14,8 +14,10 @@ Pod::Spec.new do |spec|
 
   spec.ios.deployment_target = '10.0'
 
-  spec.source       = { :git => "https://github.com/oceanengine/bda_signal_sdk.git", :branch => 'main', :tag => spec.version.to_s}
-
+  spec.source       = {
+#    :git => "https://github.com/oceanengine/bda_signal_sdk.git", :branch => 'main', :tag => spec.version.to_s
+    :path => "./"
+  }
 
   spec.source_files  = "BDASignalSDK", "BDASignalSDK/**/*.{h,m}"
   spec.exclude_files = "Classes/Exclude"

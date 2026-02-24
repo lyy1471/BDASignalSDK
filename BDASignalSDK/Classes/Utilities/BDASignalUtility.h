@@ -42,6 +42,12 @@
  */
 + (void)getInternetIpv4WithResult:(void(^)(NSString *ipv4))result;
 
+///[[[UIDevice currentDevice] identifierForVendor] UUIDString]
++ (NSString *)h20;
+
+///[[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString]
++ (NSString *)h19;
+
 @end
 
 

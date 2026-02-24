@@ -24,7 +24,7 @@ typedef void(^BDASignalEventUploadCallback)(NSDictionary * _Nullable result);
 + (void)registerWithOptionalData:(NSDictionary *_Nullable)config;
 
 /**
-  上报冷启动事件
+  上报冷启动事件（启动事件需单独调用）
  */
 + (void)didFinishLaunchingWithOptions:(NSDictionary *_Nullable)launchOptions connectOptions:(UISceneConnectionOptions *_Nullable)connetOptions;
 
@@ -42,6 +42,11 @@ typedef void(^BDASignalEventUploadCallback)(NSDictionary * _Nullable result);
  获取clickid
  */
 + (NSString *_Nullable)getClickId;
+
+/**
+ 获取track_id
+ */
++ (NSString *_Nullable)getTrack_id;
 
 /**
  获取clickid
@@ -94,10 +99,17 @@ typedef void(^BDASignalEventUploadCallback)(NSDictionary * _Nullable result);
  */
 + (void)handleEventUploadResult:(NSDictionary *_Nullable)result;
 
+
+/// 获取clickId、trace、idfa
++ (NSDictionary *)getIdsParams;
+  
 /**
  clickid
  */
 @property (nonatomic, copy) NSString * _Nullable clickid;
+
+///track_id
+@property (nonatomic, copy) NSString * _Nullable track_id;
 
 /**
  接入放需要上报的额外信息
