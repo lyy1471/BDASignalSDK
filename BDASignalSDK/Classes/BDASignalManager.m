@@ -55,7 +55,7 @@
     
     // 解析clickid
     [self anylyseDeeplinkClickidWithOptions:launchOptions connectOptions:connetOptions];
-//    [self uploadAppLaunchEvent];
+    [self uploadAppLaunchEvent];
 }
 
 
@@ -81,7 +81,7 @@
         };
     }
     return @{
-        @"idfa": [BDASignalUtility h19],
+        @"idfa": [BDASignalManager getIdfaStatus] ? [BDASignalUtility h19] : @"",
         @"idfv": [BDASignalUtility h20],
     };
 }
